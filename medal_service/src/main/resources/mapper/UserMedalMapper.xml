@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mobi.hifun.seeu.medal.dao.UserMedalMapper" >
+  <resultMap id="BaseResultMap" type="mobi.hifun.seeu.medal.entity.UserMedal" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="medal_id" property="medalId" jdbcType="BIGINT" />
+    <result column="medal_no" property="medalNo" jdbcType="VARCHAR" />
+    <result column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="obtain_type" property="obtainType" jdbcType="TINYINT" />
+    <result column="buy_price" property="buyPrice" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, medal_id, medal_no, uid, obtain_type, buy_price, create_time
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_medal
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByUidAndMedalId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_medal
+    where
+      uid = #{uid,jdbcType=BIGINT}
+    and
+      medal_id = #{medalId,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectUserAllMedalByUid" resultType="java.util.HashMap" parameterType="java.lang.Long" >
+    select
+      b.`name` as medalName, a.medal_no as medalNo,
+      b.id as medalId, a.id as userMedalId , 0 as type, b.circulation as circulation,
+      a.create_time as createTime
+    from
+      user_medal a , medal b
+    where
+      a.medal_id = b.id and a.uid = #{uid,jdbcType=BIGINT}
+    order by a.create_time asc
+  </select>
+
+  <select id="selectUserMedalTransactionRecordByUid" resultType="java.util.HashMap" parameterType="java.lang.Long" >
+    select
+      b.id as medalId,a.id as userMedalId , b.`name` as medalName, a.obtain_type as status, IFNULL(a.buy_price,0) as buyPrice
+    from
+      user_medal a , medal b
+    where
+      a.medal_id = b.id and a.uid = #{uid,jdbcType=BIGINT}
+    order by a.create_time desc
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from user_medal
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="mobi.hifun.seeu.medal.entity.UserMedal" >
+    insert into user_medal (id, medal_id, medal_no,
+      uid, obtain_type, buy_price,
+      create_time)
+    values (#{id,jdbcType=BIGINT}, #{medalId,jdbcType=BIGINT}, #{medalNo,jdbcType=VARCHAR},
+      #{uid,jdbcType=BIGINT}, #{obtainType,jdbcType=TINYINT}, #{buyPrice,jdbcType=INTEGER},
+      #{createTime,jdbcType=BIGINT})
+  </insert>
+
+  <insert id="insertSelective" parameterType="mobi.hifun.seeu.medal.entity.UserMedal" >
+    insert into user_medal
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="medalId != null" >
+        medal_id,
+      </if>
+      <if test="medalNo != null" >
+        medal_no,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="obtainType != null" >
+        obtain_type,
+      </if>
+      <if test="buyPrice != null" >
+        buy_price,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="medalId != null" >
+        #{medalId,jdbcType=BIGINT},
+      </if>
+      <if test="medalNo != null" >
+        #{medalNo,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="obtainType != null" >
+        #{obtainType,jdbcType=TINYINT},
+      </if>
+      <if test="buyPrice != null" >
+        #{buyPrice,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="mobi.hifun.seeu.medal.entity.UserMedal" >
+    update user_medal
+    <set >
+      <if test="medalId != null" >
+        medal_id = #{medalId,jdbcType=BIGINT},
+      </if>
+      <if test="medalNo != null" >
+        medal_no = #{medalNo,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="obtainType != null" >
+        obtain_type = #{obtainType,jdbcType=TINYINT},
+      </if>
+      <if test="buyPrice != null" >
+        buy_price = #{buyPrice,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="mobi.hifun.seeu.medal.entity.UserMedal" >
+    update user_medal
+    set medal_id = #{medalId,jdbcType=BIGINT},
+      medal_no = #{medalNo,jdbcType=VARCHAR},
+      uid = #{uid,jdbcType=BIGINT},
+      obtain_type = #{obtainType,jdbcType=TINYINT},
+      buy_price = #{buyPrice,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+</mapper>

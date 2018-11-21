@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mobi.hifun.seeu.medal.dao.UserFragmentsRecordMapper" >
+  <resultMap id="BaseResultMap" type="mobi.hifun.seeu.medal.entity.UserFragmentsRecord" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="medal_id" property="medalId" jdbcType="BIGINT" />
+    <result column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="operation_type" property="operationType" jdbcType="TINYINT" />
+    <result column="divine_id" property="divineId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, medal_id, uid, num, operation_type, divine_id, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_fragments_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from user_fragments_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id"  parameterType="mobi.hifun.seeu.medal.entity.UserFragmentsRecord" >
+    insert into user_fragments_record (id, medal_id, uid, 
+      num, operation_type,
+      divine_id, create_time)
+    values (#{id,jdbcType=BIGINT}, #{medalId,jdbcType=BIGINT}, #{uid,jdbcType=BIGINT}, 
+      #{num,jdbcType=INTEGER},#{operationType,jdbcType=TINYINT},
+      #{divineId,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="mobi.hifun.seeu.medal.entity.UserFragmentsRecord" >
+    insert into user_fragments_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="medalId != null" >
+        medal_id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="operationType != null" >
+        operation_type,
+      </if>
+      <if test="divineId != null" >
+        divine_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="medalId != null" >
+        #{medalId,jdbcType=BIGINT},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="operationType != null" >
+        #{operationType,jdbcType=TINYINT},
+      </if>
+      <if test="divineId != null" >
+        #{divineId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="mobi.hifun.seeu.medal.entity.UserFragmentsRecord" >
+    update user_fragments_record
+    <set >
+      <if test="medalId != null" >
+        medal_id = #{medalId,jdbcType=BIGINT},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="operationType != null" >
+        operation_type = #{operationType,jdbcType=TINYINT},
+      </if>
+      <if test="divineId != null" >
+        divine_id = #{divineId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="mobi.hifun.seeu.medal.entity.UserFragmentsRecord" >
+    update user_fragments_record
+    set medal_id = #{medalId,jdbcType=BIGINT},
+      uid = #{uid,jdbcType=BIGINT},
+      num = #{num,jdbcType=INTEGER},
+      operation_type = #{operationType,jdbcType=TINYINT},
+      divine_id = #{divineId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

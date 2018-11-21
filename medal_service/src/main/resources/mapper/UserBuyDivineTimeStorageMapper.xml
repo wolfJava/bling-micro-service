@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mobi.hifun.seeu.medal.dao.UserBuyDivineTimeStorageMapper" >
+  <resultMap id="BaseResultMap" type="mobi.hifun.seeu.medal.entity.UserBuyDivineTimeStorage" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="total_divine_num" property="totalDivineNum" jdbcType="INTEGER" />
+    <result column="available_divine_num" property="availableDivineNum" jdbcType="INTEGER" />
+    <result column="used_divine_num" property="usedDivineNum" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, uid, total_divine_num, available_divine_num, used_divine_num, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from user_buy_divine_time_storage
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByUid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from user_buy_divine_time_storage
+    where uid = #{uid,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from user_buy_divine_time_storage
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="mobi.hifun.seeu.medal.entity.UserBuyDivineTimeStorage" >
+    insert into user_buy_divine_time_storage (id, uid, total_divine_num,
+      available_divine_num, used_divine_num, create_time,
+      update_time)
+    values (#{id,jdbcType=BIGINT}, #{uid,jdbcType=BIGINT}, #{totalDivineNum,jdbcType=INTEGER},
+      #{availableDivineNum,jdbcType=INTEGER}, #{usedDivineNum,jdbcType=INTEGER}, #{createTime,jdbcType=BIGINT},
+      #{updateTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="mobi.hifun.seeu.medal.entity.UserBuyDivineTimeStorage" >
+    insert into user_buy_divine_time_storage
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="totalDivineNum != null" >
+        total_divine_num,
+      </if>
+      <if test="availableDivineNum != null" >
+        available_divine_num,
+      </if>
+      <if test="usedDivineNum != null" >
+        used_divine_num,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="totalDivineNum != null" >
+        #{totalDivineNum,jdbcType=INTEGER},
+      </if>
+      <if test="availableDivineNum != null" >
+        #{availableDivineNum,jdbcType=INTEGER},
+      </if>
+      <if test="usedDivineNum != null" >
+        #{usedDivineNum,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="mobi.hifun.seeu.medal.entity.UserBuyDivineTimeStorage" >
+    update user_buy_divine_time_storage
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="totalDivineNum != null" >
+        total_divine_num = #{totalDivineNum,jdbcType=INTEGER},
+      </if>
+      <if test="availableDivineNum != null" >
+        available_divine_num = #{availableDivineNum,jdbcType=INTEGER},
+      </if>
+      <if test="usedDivineNum != null" >
+        used_divine_num = #{usedDivineNum,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="mobi.hifun.seeu.medal.entity.UserBuyDivineTimeStorage" >
+    update user_buy_divine_time_storage
+    set uid = #{uid,jdbcType=BIGINT},
+      total_divine_num = #{totalDivineNum,jdbcType=INTEGER},
+      available_divine_num = #{availableDivineNum,jdbcType=INTEGER},
+      used_divine_num = #{usedDivineNum,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mobi.hifun.seeu.medal.dao.MedalMapper" >
+  <resultMap id="BaseResultMap" type="mobi.hifun.seeu.medal.entity.Medal" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="thumbnail_url" property="thumbnailUrl" jdbcType="VARCHAR" />
+    <result column="view_url" property="viewUrl" jdbcType="VARCHAR" />
+    <result column="circulation" property="circulation" jdbcType="INTEGER" />
+    <result column="medal_type" property="medalType" jdbcType="TINYINT" />
+    <result column="need_fragments_num" property="needFragmentsNum" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="INTEGER" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="introduce_caption" property="introduceCaption" jdbcType="VARCHAR" />
+    <result column="obtain_route_caption" property="obtainRouteCaption" jdbcType="VARCHAR" />
+    <result column="reward_caption" property="rewardCaption" jdbcType="VARCHAR" />
+    <result column="destroy_caption" property="destroyCaption" jdbcType="VARCHAR" />
+    <result column="is_del" property="isDel" jdbcType="BIT" />
+    <result column="is_transaction" property="isTransaction" jdbcType="BIT" />
+    <result column="is_destory" property="isDestory" jdbcType="BIT" />
+    <result column="is_compose" property="isCompose" jdbcType="BIT" />
+    <result column="is_obtain" property="isObtain" jdbcType="BIT" />
+    <result column="is_sell" property="isSell" jdbcType="BIT" />
+    <result column="divine_num" property="divineNum" jdbcType="INTEGER" />
+    <result column="reserve_num" property="reserveNum" jdbcType="INTEGER" />
+    <result column="task_num" property="taskNum" jdbcType="INTEGER" />
+    <result column="fragments_waring_num" property="fragmentsWaringNum" jdbcType="INTEGER" />
+    <result column="sell_caption" property="sellCaption" jdbcType="VARCHAR" />
+    <result column="sell_start_time" property="sellStartTime" jdbcType="BIGINT" />
+    <result column="sell_end_time" property="sellEndTime" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="divine_available_fragments_num" property="divineAvailableFragmentsNum" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, thumbnail_url, view_url, circulation, medal_type, need_fragments_num, price,
+    sort, introduce_caption, obtain_route_caption, reward_caption, destroy_caption, is_del,
+    is_transaction, is_destory, is_compose, is_obtain, is_sell, divine_num, reserve_num,
+    task_num, fragments_waring_num, sell_caption, sell_start_time, sell_end_time, create_time,
+    update_time
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from medal
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from medal
+    where name = #{name,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByDel" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from
+      medal
+    where
+      is_del = #{isDel,jdbcType=BIT}
+    order by
+      sort asc
+  </select>
+
+  <sql id="Column_List_Alias" >
+    a.id, name, thumbnail_url, view_url, circulation, medal_type, need_fragments_num, price,
+    sort, introduce_caption, obtain_route_caption, reward_caption, destroy_caption, is_del,
+    is_transaction, is_destory, is_compose, is_obtain, is_sell, divine_num, reserve_num,
+    task_num, fragments_waring_num, sell_caption, sell_start_time, sell_end_time, a.create_time,
+    a.update_time,b.divine_available_fragments_num
+  </sql>
+
+
+  <select id="selectByIsCompose" resultMap="BaseResultMap" >
+    select
+      <include refid="Column_List_Alias" />
+    from
+      medal a ,medal_fragments_storage b
+    where
+      is_compose = #{isCompose,jdbcType=BIT}
+    and
+      a.id = b.medal_id
+    and
+      b.divine_available_fragments_num > 0
+    order by
+      sort
+    asc
+  </select>
+
+  <select id="selectByMedalType" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from medal
+    where medal_type = #{medalType,jdbcType=TINYINT}
+    and is_del = false
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from medal
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="mobi.hifun.seeu.medal.entity.Medal" >
+    insert into medal (id, name, thumbnail_url,
+      view_url, circulation, medal_type,
+      need_fragments_num, price, sort,
+      introduce_caption, obtain_route_caption, reward_caption,
+      destroy_caption, is_del, is_transaction,
+      is_destory, is_compose, is_obtain,
+      is_sell, divine_num, reserve_num,
+      task_num, fragments_waring_num, sell_caption,
+      sell_start_time, sell_end_time, create_time,
+      update_time)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{thumbnailUrl,jdbcType=VARCHAR},
+      #{viewUrl,jdbcType=VARCHAR}, #{circulation,jdbcType=INTEGER}, #{medalType,jdbcType=TINYINT},
+      #{needFragmentsNum,jdbcType=INTEGER}, #{price,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER},
+      #{introduceCaption,jdbcType=VARCHAR}, #{obtainRouteCaption,jdbcType=VARCHAR}, #{rewardCaption,jdbcType=VARCHAR},
+      #{destroyCaption,jdbcType=VARCHAR}, #{isDel,jdbcType=BIT}, #{isTransaction,jdbcType=BIT},
+      #{isDestory,jdbcType=BIT}, #{isCompose,jdbcType=BIT}, #{isObtain,jdbcType=BIT},
+      #{isSell,jdbcType=BIT}, #{divineNum,jdbcType=INTEGER}, #{reserveNum,jdbcType=INTEGER},
+      #{taskNum,jdbcType=INTEGER}, #{fragmentsWaringNum,jdbcType=INTEGER}, #{sellCaption,jdbcType=VARCHAR},
+      #{sellStartTime,jdbcType=BIGINT}, #{sellEndTime,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT},
+      #{updateTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="mobi.hifun.seeu.medal.entity.Medal" >
+    insert into medal
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="thumbnailUrl != null" >
+        thumbnail_url,
+      </if>
+      <if test="viewUrl != null" >
+        view_url,
+      </if>
+      <if test="circulation != null" >
+        circulation,
+      </if>
+      <if test="medalType != null" >
+        medal_type,
+      </if>
+      <if test="needFragmentsNum != null" >
+        need_fragments_num,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="introduceCaption != null" >
+        introduce_caption,
+      </if>
+      <if test="obtainRouteCaption != null" >
+        obtain_route_caption,
+      </if>
+      <if test="rewardCaption != null" >
+        reward_caption,
+      </if>
+      <if test="destroyCaption != null" >
+        destroy_caption,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+      <if test="isTransaction != null" >
+        is_transaction,
+      </if>
+      <if test="isDestory != null" >
+        is_destory,
+      </if>
+      <if test="isCompose != null" >
+        is_compose,
+      </if>
+      <if test="isObtain != null" >
+        is_obtain,
+      </if>
+      <if test="isSell != null" >
+        is_sell,
+      </if>
+      <if test="divineNum != null" >
+        divine_num,
+      </if>
+      <if test="reserveNum != null" >
+        reserve_num,
+      </if>
+      <if test="taskNum != null" >
+        task_num,
+      </if>
+      <if test="fragmentsWaringNum != null" >
+        fragments_waring_num,
+      </if>
+      <if test="sellCaption != null" >
+        sell_caption,
+      </if>
+      <if test="sellStartTime != null" >
+        sell_start_time,
+      </if>
+      <if test="sellEndTime != null" >
+        sell_end_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="thumbnailUrl != null" >
+        #{thumbnailUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="viewUrl != null" >
+        #{viewUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="circulation != null" >
+        #{circulation,jdbcType=INTEGER},
+      </if>
+      <if test="medalType != null" >
+        #{medalType,jdbcType=TINYINT},
+      </if>
+      <if test="needFragmentsNum != null" >
+        #{needFragmentsNum,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="introduceCaption != null" >
+        #{introduceCaption,jdbcType=VARCHAR},
+      </if>
+      <if test="obtainRouteCaption != null" >
+        #{obtainRouteCaption,jdbcType=VARCHAR},
+      </if>
+      <if test="rewardCaption != null" >
+        #{rewardCaption,jdbcType=VARCHAR},
+      </if>
+      <if test="destroyCaption != null" >
+        #{destroyCaption,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=BIT},
+      </if>
+      <if test="isTransaction != null" >
+        #{isTransaction,jdbcType=BIT},
+      </if>
+      <if test="isDestory != null" >
+        #{isDestory,jdbcType=BIT},
+      </if>
+      <if test="isCompose != null" >
+        #{isCompose,jdbcType=BIT},
+      </if>
+      <if test="isObtain != null" >
+        #{isObtain,jdbcType=BIT},
+      </if>
+      <if test="isSell != null" >
+        #{isSell,jdbcType=BIT},
+      </if>
+      <if test="divineNum != null" >
+        #{divineNum,jdbcType=INTEGER},
+      </if>
+      <if test="reserveNum != null" >
+        #{reserveNum,jdbcType=INTEGER},
+      </if>
+      <if test="taskNum != null" >
+        #{taskNum,jdbcType=INTEGER},
+      </if>
+      <if test="fragmentsWaringNum != null" >
+        #{fragmentsWaringNum,jdbcType=INTEGER},
+      </if>
+      <if test="sellCaption != null" >
+        #{sellCaption,jdbcType=VARCHAR},
+      </if>
+      <if test="sellStartTime != null" >
+        #{sellStartTime,jdbcType=BIGINT},
+      </if>
+      <if test="sellEndTime != null" >
+        #{sellEndTime,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="mobi.hifun.seeu.medal.entity.Medal" >
+    update medal
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="thumbnailUrl != null" >
+        thumbnail_url = #{thumbnailUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="viewUrl != null" >
+        view_url = #{viewUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="circulation != null" >
+        circulation = #{circulation,jdbcType=INTEGER},
+      </if>
+      <if test="medalType != null" >
+        medal_type = #{medalType,jdbcType=TINYINT},
+      </if>
+      <if test="needFragmentsNum != null" >
+        need_fragments_num = #{needFragmentsNum,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="introduceCaption != null" >
+        introduce_caption = #{introduceCaption,jdbcType=VARCHAR},
+      </if>
+      <if test="obtainRouteCaption != null" >
+        obtain_route_caption = #{obtainRouteCaption,jdbcType=VARCHAR},
+      </if>
+      <if test="rewardCaption != null" >
+        reward_caption = #{rewardCaption,jdbcType=VARCHAR},
+      </if>
+      <if test="destroyCaption != null" >
+        destroy_caption = #{destroyCaption,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=BIT},
+      </if>
+      <if test="isTransaction != null" >
+        is_transaction = #{isTransaction,jdbcType=BIT},
+      </if>
+      <if test="isDestory != null" >
+        is_destory = #{isDestory,jdbcType=BIT},
+      </if>
+      <if test="isCompose != null" >
+        is_compose = #{isCompose,jdbcType=BIT},
+      </if>
+      <if test="isObtain != null" >
+        is_obtain = #{isObtain,jdbcType=BIT},
+      </if>
+      <if test="isSell != null" >
+        is_sell = #{isSell,jdbcType=BIT},
+      </if>
+      <if test="divineNum != null" >
+        divine_num = #{divineNum,jdbcType=INTEGER},
+      </if>
+      <if test="reserveNum != null" >
+        reserve_num = #{reserveNum,jdbcType=INTEGER},
+      </if>
+      <if test="taskNum != null" >
+        task_num = #{taskNum,jdbcType=INTEGER},
+      </if>
+      <if test="fragmentsWaringNum != null" >
+        fragments_waring_num = #{fragmentsWaringNum,jdbcType=INTEGER},
+      </if>
+      <if test="sellCaption != null" >
+        sell_caption = #{sellCaption,jdbcType=VARCHAR},
+      </if>
+      <if test="sellStartTime != null" >
+        sell_start_time = #{sellStartTime,jdbcType=BIGINT},
+      </if>
+      <if test="sellEndTime != null" >
+        sell_end_time = #{sellEndTime,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="mobi.hifun.seeu.medal.entity.Medal" >
+    update medal
+    set name = #{name,jdbcType=VARCHAR},
+      thumbnail_url = #{thumbnailUrl,jdbcType=VARCHAR},
+      view_url = #{viewUrl,jdbcType=VARCHAR},
+      circulation = #{circulation,jdbcType=INTEGER},
+      medal_type = #{medalType,jdbcType=TINYINT},
+      need_fragments_num = #{needFragmentsNum,jdbcType=INTEGER},
+      price = #{price,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER},
+      introduce_caption = #{introduceCaption,jdbcType=VARCHAR},
+      obtain_route_caption = #{obtainRouteCaption,jdbcType=VARCHAR},
+      reward_caption = #{rewardCaption,jdbcType=VARCHAR},
+      destroy_caption = #{destroyCaption,jdbcType=VARCHAR},
+      is_del = #{isDel,jdbcType=BIT},
+      is_transaction = #{isTransaction,jdbcType=BIT},
+      is_destory = #{isDestory,jdbcType=BIT},
+      is_compose = #{isCompose,jdbcType=BIT},
+      is_obtain = #{isObtain,jdbcType=BIT},
+      is_sell = #{isSell,jdbcType=BIT},
+      divine_num = #{divineNum,jdbcType=INTEGER},
+      reserve_num = #{reserveNum,jdbcType=INTEGER},
+      task_num = #{taskNum,jdbcType=INTEGER},
+      fragments_waring_num = #{fragmentsWaringNum,jdbcType=INTEGER},
+      sell_caption = #{sellCaption,jdbcType=VARCHAR},
+      sell_start_time = #{sellStartTime,jdbcType=BIGINT},
+      sell_end_time = #{sellEndTime,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>
